@@ -1,5 +1,5 @@
-const validateFieldsUser = require('./validateFieldsUser');
+const validateFieldsLogin = require('./validateFieldsLogin');
 
 module.exports = {
-  validateFieldsUser,
+  validateFieldsLogin,
 };
