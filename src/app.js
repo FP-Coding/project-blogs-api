@@ -1,5 +1,6 @@
 const express = require('express');
 const routeLogin = require('./routes/loginRoute');
+const routeUser = require('./routes/userRoute');
 
 // ...
 
@@ -8,6 +9,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/login', routeLogin);
+app.use('/user', routeUser);
 
 // ...
 
