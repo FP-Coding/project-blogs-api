@@ -15,7 +15,7 @@ const verificationToken = (token) => {
     const user = jwt.verify(token, JWT_SECRET);
     return { type: null, message: user };
   } catch (error) {
-    return { type: 400, message: 'invalid token' };
+    return { type: 401, message: 'Expired or invalid token' };
   }
 };
 
