@@ -6,6 +6,8 @@ const app = express();
 
 app.use(express.json());
 
+// initial commit
+
 // ...
 
 // É importante exportar a constante `app`,
