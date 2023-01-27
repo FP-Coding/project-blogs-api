@@ -11,6 +11,12 @@ const create = async ({ name }) => {
   return { type: null, message: categoryCreated }; 
 };
 
+const getAll = async () => {
+  const categories = await Category.findAll({ order: [['id', 'ASC']] });
+  return { type: null, message: categories };
+};
+
 module.exports = {
   create,
+  getAll,
 };
