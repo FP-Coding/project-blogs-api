@@ -1,11 +1,13 @@
+const { Sequelize } = require('sequelize')
+
 const BlogPostSchema = (sequelize, DataTypes) => {
   const BlogPost = sequelize.define('BlogPost', {
-    id: { type: DataTypes.INTEGER, primaryKey: true },
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     title: DataTypes.STRING,
     content: DataTypes.STRING,
     userId: { type: DataTypes.INTEGER, foreignKey: true },
-    published: { type: DataTypes.DATE, default: sequelize.literal('CURRENT_TIMESTAMPS()')},
-    updated: { type: DataTypes.DATE, default: sequelize.literal('CURRENT_TIMESTAMPS()')},
+    published: { type: DataTypes.DATE, defaultValue: Sequelize.NOW()},
+    updated: { type: DataTypes.DATE, defaultValue: Sequelize.NOW()},
   }, {
     tableName: 'blog_posts',
     underscored: true,

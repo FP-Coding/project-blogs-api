@@ -19,7 +19,10 @@ const verificationToken = (token) => {
   }
 };
 
+const decodeToken = (token) => jwt.decode(token, JWT_SECRET).email;
+
 module.exports = {
   generateToken,
   verificationToken,
+  decodeToken,
 };

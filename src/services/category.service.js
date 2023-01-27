@@ -6,9 +6,8 @@ const create = async ({ name }) => {
   if (error.type) return error;
   const existentCategory = await Category.findOne({ where: { name } });
   if (existentCategory) return { type: 400, message: 'This category alredy exist' };
-  await Category.create({ name });
-  const categoryCreated = await Category.findOne({ where: { name } });
-  return { type: null, message: categoryCreated }; 
+  const { dataValues } = await Category.create({ name });
+  return { type: null, message: dataValues }; 
 };
 
 const getAll = async () => {

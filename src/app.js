@@ -1,5 +1,5 @@
 const express = require('express');
-const { categoryRoute, userRoute, loginRoute } = require('./routes');
+const { categoryRoute, userRoute, loginRoute, postRoute } = require('./routes');
 
 // ...
 
@@ -10,6 +10,7 @@ app.use(express.json());
 app.use('/login', loginRoute);
 app.use('/user', userRoute);
 app.use('/categories', categoryRoute);
+app.use('/post', postRoute);
 
 // ...
 
