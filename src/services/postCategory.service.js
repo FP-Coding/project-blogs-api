@@ -21,6 +21,17 @@ const createPost = async (token, { title, content, categoryIds }) => {
   return { type: null, message: dataValues };
 };
 
+const getAll = async () => {
+  const result = await BlogPost.findAll({
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  return { type: null, message: result };
+};
+
 module.exports = {
   createPost,
+  getAll,
 };
