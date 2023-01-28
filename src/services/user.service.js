@@ -1,6 +1,6 @@
 const { User } = require('../models');
 const { validateFieldsUser, validateId } = require('./validators/validatorFields');
-const { generateToken } = require('../utils/jwt');
+const { generateToken, decodeToken } = require('../utils/jwt');
 
 const create = async (newUser) => {
   const error = validateFieldsUser(newUser);
@@ -12,7 +12,7 @@ const create = async (newUser) => {
   });
   if (existentUser) return { type: 409, message: 'User already registered' };
   await User.create(newUser);
-  const token = generateToken(newUser);
+  const token = await generateToken(newUser);
   return { type: null, message: token };
 };
 
@@ -32,8 +32,15 @@ const getById = async (userId) => {
   return { type: null, message: { id, displayName, email, image } };
 };
 
+const deleteMyOwnUser = async (token) => {
+  const { id } = decodeToken(token);
+  await User.destroy({ where: { id } });
+  return { type: null, message: '' };
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  deleteMyOwnUser,
 };

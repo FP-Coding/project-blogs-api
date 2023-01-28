@@ -15,7 +15,7 @@ const createPost = async (token, { title, content, categoryIds }) => {
   if (result.length !== categoryIds.length) { 
     return { type: 400, message: 'one or more "categoryIds" not found' }; 
   }
-  const email = decodeToken(token);
+  const { email } = decodeToken(token);
   const user = await User.findOne({ where: { email } });
   if (!user) return { type: 404, message: 'User does not exist' };
   const { dataValues } = await BlogPost.create({ title, content, userId: user.dataValues.id });
@@ -55,7 +55,7 @@ const update = async (id, token, { title, content }) => {
   if (error.type) return error;
   const isExistentPost = await BlogPost.findByPk(id);
   if (!isExistentPost) return { type: 404, message: 'Post does not exist' };
-  const email = decodeToken(token);
+  const { email } = decodeToken(token);
   const { dataValues: { id: userId } } = await User.findOne({ where: { email } });
   if (isExistentPost.dataValues.userId !== userId) { 
     return { type: 401, message: 'Unauthorized user' }; 
@@ -73,7 +73,7 @@ const update = async (id, token, { title, content }) => {
 const deletePost = async (id, token) => {
   const isExistentPost = await BlogPost.findByPk(id);
   if (!isExistentPost) return { type: 404, message: 'Post does not exist' };
-  const email = decodeToken(token);
+  const { email } = decodeToken(token);
   const { dataValues: { id: userId } } = await User.findOne({ where: { email } });
   if (isExistentPost.dataValues.userId !== userId) { 
     return { type: 401, message: 'Unauthorized user' }; 
