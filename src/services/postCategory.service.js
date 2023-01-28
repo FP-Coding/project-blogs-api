@@ -82,10 +82,24 @@ const deletePost = async (id, token) => {
   return { type: null, message: '' };
 };
 
+const getBySearch = async (search) => {
+  const result = await BlogPost.findAll({ 
+    where: {
+    [Op.or]: [{ title: { [Op.like]: `%${search}%` } }, { content: { [Op.like]: `%${search}%` } }],
+    }, 
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ] });
+  console.log(result);
+  return { type: null, message: result };
+};
+
 module.exports = {
   createPost,
   getAll,
   getById,
   update,
   deletePost,
+  getBySearch,
 };
