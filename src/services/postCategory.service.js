@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 const { PostCategory, User, BlogPost, Category } = require('../models');
 const { decodeToken } = require('../utils/jwt');
-const { validateFieldsPost } = require('./validators/validatorFields');
+const { validateFieldsPost, validateId } = require('./validators/validatorFields');
 
 const createPost = async (token, { title, content, categoryIds }) => {
   const error = validateFieldsPost({ title, content, categoryIds });
@@ -31,7 +31,21 @@ const getAll = async () => {
   return { type: null, message: result };
 };
 
+const getById = async (id) => {
+  const error = validateId(id);
+  if (error.type) return error;
+  const result = await BlogPost.findByPk(id, {
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  if (!result) return { type: 404, message: 'Post does not exist' };
+  return { type: null, message: result };
+};
+
 module.exports = {
   createPost,
   getAll,
+  getById,
 };

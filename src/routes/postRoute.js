@@ -4,8 +4,8 @@ const { validationToken } = require('../middlewares');
 
 const route = Router();
 
+route.get('/:id', validationToken, postCategoryController.getById);
+route.get('/', validationToken, postCategoryController.getAll);
 route.post('/', validationToken, postCategoryController.create);
-route.get('/', validationToken,
-postCategoryController.getAll);
 
 module.exports = route;
