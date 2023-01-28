@@ -54,14 +54,13 @@ const update = async (id, token, { title, content }) => {
   const error = validateFieldsUpdatePost({ title, content });
   if (error.type) return error;
   const isExistentPost = await BlogPost.findByPk(id);
-  if (!isExistentPost) return { type: 404, message: 'This post does not exist' };
+  if (!isExistentPost) return { type: 404, message: 'Post does not exist' };
   const email = decodeToken(token);
   const { dataValues: { id: userId } } = await User.findOne({ where: { email } });
   if (isExistentPost.dataValues.userId !== userId) { 
     return { type: 401, message: 'Unauthorized user' }; 
   }
-  await BlogPost
-  .update({ title, content, updated: Sequelize.literal('NOW()') }, { where: { id } });
+  await BlogPost.update({ title, content, updated: Sequelize.literal('NOW()') }, { where: { id } });
   const postUpdated = await BlogPost.findByPk(id, {
     include: [
       { model: User, as: 'user', attributes: { exclude: ['password'] } },
@@ -71,9 +70,22 @@ const update = async (id, token, { title, content }) => {
   return { type: null, message: postUpdated };
 };
 
+const deletePost = async (id, token) => {
+  const isExistentPost = await BlogPost.findByPk(id);
+  if (!isExistentPost) return { type: 404, message: 'Post does not exist' };
+  const email = decodeToken(token);
+  const { dataValues: { id: userId } } = await User.findOne({ where: { email } });
+  if (isExistentPost.dataValues.userId !== userId) { 
+    return { type: 401, message: 'Unauthorized user' }; 
+  }
+  await BlogPost.destroy({ where: { id } });
+  return { type: null, message: '' };
+};
+
 module.exports = {
   createPost,
   getAll,
   getById,
   update,
+  deletePost,
 };
