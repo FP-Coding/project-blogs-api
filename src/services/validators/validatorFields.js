@@ -19,7 +19,13 @@ const validateName = (name) => {
 };
 
 const validateFieldsPost = (postInfo) => {
-  const { error } = postSchema.validate(postInfo);
+  const { error } = postSchema.postSchema.validate(postInfo);
+  if (error) return { type: 400, message: 'Some required fields are missing' };
+  return { type: null, message: '' }; 
+};
+
+const validateFieldsUpdatePost = (postInfo) => {
+  const { error } = postSchema.postSchemaUpdate.validate(postInfo);
   if (error) return { type: 400, message: 'Some required fields are missing' };
   return { type: null, message: '' }; 
 };
@@ -29,4 +35,5 @@ module.exports = {
   validateId,
   validateName,
   validateFieldsPost,
+  validateFieldsUpdatePost,
 };
