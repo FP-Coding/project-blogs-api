@@ -6,7 +6,7 @@
 <hr />
 
 
-# Projeto Blog API
+# Projeto Blogs API
 
 Projeto realizado durante módulo de Back-end do curso de desenvolvimento web da Trybe.
 
